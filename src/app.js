@@ -2,38 +2,25 @@ const express = require('express')
 const app = express() 
 const port = 3000
 
-// query params 
-app.get('/user/:userId/:name/:password', (req, res) => {
-    console.log(req.params)
-    res.send("User added successfully.")
-})
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-// http://localhost:3000/user/101/Omkar/pass123
+app.use("/admin", adminAuth);
 
-// [Object: null prototype] {
-//   userId: '101',
-//   name: 'Aanad',
-//   password: 'pass123'
-// }
+app.post("/user/login", (req, res) => {
+  res.send("User logged in successfully!");
+});
 
-// dynamic routing
-app.get('/user', (req, res) => {
-    console.log(req.query)
-    res.send({name: req.query.name, password: req.query.password})
-})
+app.get("/user/data", userAuth, (req, res) => {
+  res.send("User Data Sent");
+});
 
-// http://localhost:3000/user?userId=101&name=Omkar&password=pass123
+app.get("/admin/getAllData", (req, res) => {
+  res.send("All Data Sent");
+});
 
-// [Object: null prototype] {
-//   userId: '101',
-//   name: 'Omkar',
-//   password: 'pass123'
-// }
-
-// This will match all the HTTP method API calls to /test
-app.use("/test", (req, res) => {
-    res.send("testing the routes")
-})
+app.get("/admin/deleteUser", (req, res) => {
+  res.send("Deleted a user");
+});
 
 app.listen(port, (req, res) => {
     console.log(`App listending on ${port}`)
