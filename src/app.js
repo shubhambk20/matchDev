@@ -2,20 +2,33 @@ const express = require('express')
 const app = express() 
 const port = 3000
 
-// This will only handale get call to /user
+// query params 
+app.get('/user/:userId/:name/:password', (req, res) => {
+    console.log(req.params)
+    res.send("User added successfully.")
+})
+
+// http://localhost:3000/user/101/Omkar/pass123
+
+// [Object: null prototype] {
+//   userId: '101',
+//   name: 'Aanad',
+//   password: 'pass123'
+// }
+
+// dynamic routing
 app.get('/user', (req, res) => {
-    res.send({"firstname": "Raj", "lastname": "Kumar"})
+    console.log(req.query)
+    res.send({name: req.query.name, password: req.query.password})
 })
 
-app.post('/user', (req, res) => {
-    // Saving data to DB logic here 
-    res.send("Data successfully saved to DB.")
-})
+// http://localhost:3000/user?userId=101&name=Omkar&password=pass123
 
-app.delete('/user', (req, res) => {
-    // Deleting data logic here 
-    res.send("Deleted successfully.")
-})
+// [Object: null prototype] {
+//   userId: '101',
+//   name: 'Omkar',
+//   password: 'pass123'
+// }
 
 // This will match all the HTTP method API calls to /test
 app.use("/test", (req, res) => {
