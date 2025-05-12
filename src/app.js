@@ -2,25 +2,18 @@ const express = require('express')
 const app = express() 
 const port = 3000
 
-const { adminAuth, userAuth } = require("./middlewares/auth");
+app.use('/getUserData', (req, res) => {
+    // Logic of DB and get user data 
+    throw new Error("Code Breaks...")
 
-app.use("/admin", adminAuth);
+    res.send("User data sent")
+})
 
-app.post("/user/login", (req, res) => {
-  res.send("User logged in successfully!");
-});
-
-app.get("/user/data", userAuth, (req, res) => {
-  res.send("User Data Sent");
-});
-
-app.get("/admin/getAllData", (req, res) => {
-  res.send("All Data Sent");
-});
-
-app.get("/admin/deleteUser", (req, res) => {
-  res.send("Deleted a user");
-});
+app.use("/", (err, req, res, next) => {
+    if (err) {
+        res.status(500).send("Something went wrong")
+    }
+})
 
 app.listen(port, (req, res) => {
     console.log(`App listending on ${port}`)
