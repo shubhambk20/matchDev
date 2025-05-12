@@ -7,7 +7,7 @@ app.use("/home", (req, res) => {
 })
 
 app.use("/hello", (req, res) => {
-    res.send("Hello, Who's there :-O ");
+    res.send("Hello, Who's there :-O");
 })
 
 app.use((req, res) => {
