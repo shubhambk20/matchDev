@@ -1,20 +1,30 @@
 const express = require('express')
 const app = express() 
 const port = 3000
+const { connectDB } = require("./config/database")
+const User = require("./models/user")
 
-app.use('/getUserData', (req, res) => {
-    // Logic of DB and get user data 
-    throw new Error("Code Breaks...")
+app.use(express.json())
 
-    res.send("User data sent")
-})
+app.post("/signup", async (req, res) => {
+    const user = new User(req.body)
 
-app.use("/", (err, req, res, next) => {
-    if (err) {
-        res.status(500).send("Something went wrong")
+    try {
+        await user.save()
+        res.send("User saved successfully.")
+    } catch (error) {
+        res.status(400).send("Error saving the user: " + error.message)
     }
 })
 
-app.listen(port, (req, res) => {
-    console.log(`App listending on ${port}`)
-});
+connectDB()
+    .then(() => {
+        console.log("Database connection established...");
+
+        app.listen(port, () => {
+            console.log("Server listening on Port", port);
+        })
+    })
+    .catch((error) => {
+        console.log("Error connecting to MongoDB:", error)
+    })
